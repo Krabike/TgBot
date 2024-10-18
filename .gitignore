@@ -1,3 +1,4 @@
 configs/config.py
 configs/*.env
 lgos/*.log
+__pycache__
