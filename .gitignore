@@ -1,5 +1,5 @@
-configs/config.py
-configs/*.env
-lgos/*.log
+*/config.py
+*.env
+*.log
 __pycache__/
 */__pycache__/
