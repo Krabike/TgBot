@@ -1,5 +1,5 @@
-*/config.py
-*.env
-*.log
+Code/configs/config.py
+Code/*.env
+Code/logs/*.log
 __pycache__/
 */__pycache__/
