@@ -1,0 +1,28 @@
+from settings import ROUTERS
+from configs.config import token
+from aiogram import Bot, Dispatcher, html
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
+import asyncio
+import logging
+import sys
+import os
+
+
+logger = logging.getLogger("my_app")
+logging.basicConfig(level="DEBUG")
+
+dp = Dispatcher()
+
+
+async def main() -> None:
+    bot = Bot(token = token, default = DefaultBotProperties(parse_mode = ParseMode.HTML))
+    dp.include_routers(*ROUTERS)
+    
+    await bot.delete_webhook(drop_pending_updates=True)
+    await dp.start_polling(bot)
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    asyncio.run(main())
