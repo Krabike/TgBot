@@ -1,6 +1,6 @@
-from settings import ROUTERS, BOT_COMMANDS_LIST
+from settings import ROUTERS, BOT_COMMANDS_LIST, dp
 from configs.config import token
-from aiogram import Bot, Dispatcher, html
+from aiogram import Bot, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 import asyncio
@@ -11,8 +11,6 @@ import os
 
 logger = logging.getLogger("my_app")
 logging.basicConfig(level="DEBUG")
-
-dp = Dispatcher()
 
 
 async def main() -> None:
