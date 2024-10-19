@@ -1,4 +1,4 @@
-from settings import ROUTERS
+from settings import ROUTERS, BOT_COMMANDS_LIST
 from configs.config import token
 from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
@@ -19,8 +19,10 @@ async def main() -> None:
     bot = Bot(token = token, default = DefaultBotProperties(parse_mode = ParseMode.HTML))
     dp.include_routers(*ROUTERS)
     
+    await bot.delete_webhook(drop_pending_updates=True)
+    await bot.set_my_commands(BOT_COMMANDS_LIST)
+    
     try:
-        await bot.delete_webhook(drop_pending_updates=True)
         await dp.start_polling(bot)
     finally:
         await bot.session.close()
