@@ -1,6 +1,7 @@
 from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.filters import Command, CommandStart
 from aiogram import Router, html
+from .settings_main_commands import COMMANDS_INFO
 import logging
 
 
@@ -19,7 +20,7 @@ class Start:
     async def start_callback(call) -> None:
         try:
             if call.data == 'start_help':
-                await call.message.answer('just a couple of information')
+                await Help.help(call.message)
                 await call.answer()
         except:
             print('error with button info')
@@ -32,7 +33,7 @@ class Help(Start):
 
     @router.message(Command('help'))
     async def help(message: Message):
-        answer_text = f'Все доступные команды:\n/start - меню управления ботом\n\n/help - выводит это сообщение\n/echo - выводит текст, введенный после команды'
+        answer_text = COMMANDS_INFO
         help_button = InlineKeyboardButton(text = 'Нажми чтобы начать', callback_data = 'type_start')
         help_keyboard = InlineKeyboardMarkup(inline_keyboard = [[help_button]])
         
@@ -43,10 +44,10 @@ class Help(Start):
     async def help_callback(call) -> None:
         try:
             if call.data == 'type_start':
-                await call.message.answer('/start')
+                await Start.start(call.message)
                 await call.answer()
-        except:
-            print('error with button help(start)')
+        except Exception as _ex:
+            print(f'error with button help(start) {_ex}')
 
 
 
