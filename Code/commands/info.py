@@ -1,15 +1,14 @@
 from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.filters import Command, CommandStart
-from aiogram import Router, html
-from .settings_commands import COMMANDS_INFO
+from aiogram import html
+from .settings_commands import COMMANDS_INFO, router
+from .do import MainCommands
 import logging
 
 
 class Start:
-    router = Router()
-
     @router.message(CommandStart())
-    async def start(message: Message) -> None:
+    async def start(message: Message):
         start_message = (
             f'Привет {html.bold(message.from_user.full_name)}, если хочешь узнать о возможностях бота - нажми на кнопку {html.bold('Help')}\n\n'
             f'А если сразу хочешь начать пользоваться ботом - нажми на {html.bold('Start')}'
@@ -21,7 +20,7 @@ class Start:
     
     
     @router.callback_query(lambda call: call.data == 'start_help')    
-    async def start_help_callback(call) -> None:
+    async def start_help_callback(call):
         try:
             if call.data == 'start_help':
                 await Help.help(call.message)
@@ -34,7 +33,7 @@ class Start:
     async def start_start_callback(call):
         try:
             if call.data == 'start_start':
-                await call.message.answer('redirecting...')
+                await MainCommands.do(call.message)
                 await call.answer()
         except:
             print('error with button start')
@@ -42,37 +41,33 @@ class Start:
 
 
 
-class Help(Start):
-    router = Start.router
-
+class Help:
     @router.message(Command('help'))
     async def help(message: Message):
         answer_text = COMMANDS_INFO
-        help_button = InlineKeyboardButton(text = 'Нажми чтобы начать', callback_data = 'type_start')
-        help_keyboard = InlineKeyboardMarkup(inline_keyboard = [[help_button]])
+        help_button1 = InlineKeyboardButton(text = 'Нажми чтобы начать', callback_data = 'type_start')
+        help_keyboard = InlineKeyboardMarkup(inline_keyboard = [[help_button1]])
         
         await message.answer(answer_text, reply_markup = help_keyboard)
         
     
     @router.callback_query(lambda call: call.data == 'type_start')
-    async def help_callback(call) -> None:
+    async def help_callback(call):
         try:
             if call.data == 'type_start':
-                await call.message.answer('redirecting...')
+                await MainCommands.do(call.message)
                 await call.answer()
         except Exception as _ex:
             print(f'error with button help(start) {_ex}')
 
 
 
-class Echo(Start):
-    router = Start.router
-    
+class Echo:
     @router.message(Command("echo"))
-    async def message_echo(message: Message) -> None:
+    async def message_echo(message: Message):
         try:
             without_command = message.text.split(maxsplit=1)
             get_text = without_command[1]
             await message.answer(get_text)
         except:
-            await message.answer("Input needed")
+            await message.answer("Обязательно значение после команды")

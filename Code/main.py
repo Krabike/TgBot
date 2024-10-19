@@ -13,7 +13,7 @@ logger = logging.getLogger("my_app")
 logging.basicConfig(level="DEBUG")
 
 
-async def main() -> None:
+async def main():
     bot = Bot(token = token, default = DefaultBotProperties(parse_mode = ParseMode.HTML))
     dp.include_routers(*ROUTERS)
     
