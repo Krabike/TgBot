@@ -1,4 +1,4 @@
-Code/configs/config.py
+*/config.py
 */*.env
 */*.log
 __pycache__/
