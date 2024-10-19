@@ -9,21 +9,44 @@ class Start:
 
     @router.message(CommandStart())
     async def start(message: Message) -> None:
-        msg = f'Привет {html.bold(message.from_user.full_name)}, если хочешь узнать о возможностях бота - нажми на кнопку {html.bold('Info')}'
-        btn = InlineKeyboardButton(text='Info', callback_data='info')
-        keyboard = InlineKeyboardMarkup(inline_keyboard = [[btn]])
-        await message.answer(msg, reply_markup = keyboard)
+        start_message = f'Привет {html.bold(message.from_user.full_name)}, если хочешь узнать о возможностях бота - нажми на кнопку {html.bold('Help')}'
+        start_button = InlineKeyboardButton(text='Help', callback_data='start_help')
+        start_keyboard = InlineKeyboardMarkup(inline_keyboard = [[start_button]])
+        await message.answer(start_message, reply_markup = start_keyboard)
     
     
-    @router.callback_query()    
+    @router.callback_query(lambda call: call.data == 'start_help')    
     async def start_callback(call) -> None:
         try:
-            if call.data == 'info':
+            if call.data == 'start_help':
                 await call.message.answer('just a couple of information')
                 await call.answer()
         except:
             print('error with button info')
+
+
+
+
+class Help(Start):
+    router = Start.router
+
+    @router.message(Command('help'))
+    async def help(message: Message):
+        answer_text = f'Все доступные команды:\n/start - меню управления ботом\n\n/help - выводит это сообщение\n/echo - выводит текст, введенный после команды'
+        help_button = InlineKeyboardButton(text = 'Нажми чтобы начать', callback_data = 'type_start')
+        help_keyboard = InlineKeyboardMarkup(inline_keyboard = [[help_button]])
+        
+        await message.answer(answer_text, reply_markup = help_keyboard)
+        
     
+    @router.callback_query(lambda call: call.data == 'type_start')
+    async def help_callback(call) -> None:
+        try:
+            if call.data == 'type_start':
+                await call.message.answer('/start')
+                await call.answer()
+        except:
+            print('error with button help(start)')
 
 
 

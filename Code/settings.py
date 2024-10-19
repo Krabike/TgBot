@@ -1,4 +1,4 @@
-from commands.main_commands.info import Start
+from commands.main_commands.info import Start, Help
 from aiogram import types
 from aiogram.types import BotCommand
 
