@@ -4,7 +4,7 @@ from aiogram import Router, html
 import logging
 
 
-class Info:
+class Start:
     router = Router()
 
     @router.message(CommandStart())
@@ -27,8 +27,8 @@ class Info:
 
 
 
-class Echo(Info):
-    router = Info.router
+class Echo(Start):
+    router = Start.router
     
     @router.message(Command("echo"))
     async def message_echo(message: Message) -> None:

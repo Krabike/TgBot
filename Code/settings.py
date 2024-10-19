@@ -1,9 +1,9 @@
-from commands.main_commands.info import Info
+from commands.main_commands.info import Start
 from aiogram import types
 from aiogram.types import BotCommand
 
 ROUTERS = [
-    Info.router,
+    Start.router,
 ]
 
 BOT_COMMANDS_LIST = [
