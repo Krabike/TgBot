@@ -35,8 +35,8 @@ class Start:
             if call.data == 'start_start':
                 await MainCommands.do(call.message)
                 await call.answer()
-        except:
-            print('error with button start')
+        except Exception as _ex:
+            print(f'error with button start {_ex}')
 
 
 
