@@ -5,17 +5,17 @@ class CommandDo:
     #command /do
     text_start = 'Это стартовое сообщение\nМеню выбора:'
     
-    button_option_notion = InlineKeyboardButton(text = 'Notion', callback_data = 'do_btn_notion')
+    button_option_notion = InlineKeyboardButton(text = 'Дневник', callback_data = 'do_btn_diary')
     
     keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_option_notion]])
     
     
-class Notion:    
-    #option1 buttons
-    text_start = 'Notion меню выбора...'
+class Diary:    
+    #Notion buttons
+    text_start = 'Меню выбора дневника...'
     text_btn1 = 'just a work text'
     
-    button1 = InlineKeyboardButton(text = 'Сделать что-то', callback_data = 'notion_btn1')
-    button_back = InlineKeyboardButton(text = 'Назад', callback_data = 'notion_btn_back')
+    button1 = InlineKeyboardButton(text = 'Оценки за неделю', callback_data = 'diary_notes')
+    button_back = InlineKeyboardButton(text = 'Назад', callback_data = 'diary_notes_back')
     
     keyboard = InlineKeyboardMarkup(inline_keyboard=[[button1, button_back]])
