@@ -7,6 +7,7 @@ import logging
 
 
 class Help:
+    #/help
     @router.message(Command('help'))
     async def help(message: Message):
         answer_text = COMMANDS_INFO
@@ -15,12 +16,12 @@ class Help:
         
         await message.answer(answer_text, reply_markup = help_keyboard)
         
-    
+    #start button in help callback
     @router.callback_query(lambda call: call.data == 'type_start')
     async def help_callback(call):
         try:
             if call.data == 'type_start':
-                await MainCommands.do(call.message)
+                await MainCommands.start(call.message)
                 await call.answer()
         except Exception as _ex:
             print(f'error with button help(start) {_ex}')
@@ -28,6 +29,7 @@ class Help:
 
 
 class Echo:
+    #/echo
     @router.message(Command("echo"))
     async def message_echo(message: Message):
         try:

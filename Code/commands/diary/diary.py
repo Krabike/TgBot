@@ -9,13 +9,13 @@ import logging
 
 
 class DiaryCommands:
-    #NOTION COMMAND
+    #/diary
     @router.message(Command('diary'))
     async def diary(message: Message):
         await message.answer(Diary.text_start, reply_markup = Diary.keyboard)
     
     
-    #NOTION BACK CALLBACK
+    #diary back callback
     @router.callback_query(lambda call: call.data == 'diary_notes_back')
     async def diary_back_callback(call):
         try:
@@ -26,7 +26,7 @@ class DiaryCommands:
             print(f'error option1_btn_back callback {_ex}')
             
     
-    #NOTION BUTTON1 CALLBACK
+    #diary get notes callback
     @router.callback_query(lambda call: call.data == 'diary_notes')
     async def diary_notes_callback(call):
         try:
