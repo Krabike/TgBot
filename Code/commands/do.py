@@ -7,13 +7,13 @@ from .commands_data.my_data import CommandDo, Diary
 import logging
 
 class MainCommands:
-    #DO
+    #start
     @router.message(CommandStart())
     async def start(message: Message):
         await message.answer(CommandDo.text_start, reply_markup = CommandDo.keyboard)
   
 
-    #DO CALLBACK NOTION BUTTON
+    #start callback diary button
     @router.callback_query(lambda call: call.data == 'do_btn_diary')
     async def do_option1_callback(call):
         try:

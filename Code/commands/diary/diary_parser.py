@@ -15,8 +15,8 @@ class ReqSet:
         "user-agent": self.user
         }    
         self.data = {
-            "username": "DG2009",
-            "password": "parolpafrol",
+            "username": "",
+            "password": "",
         }
 
 
