@@ -13,7 +13,7 @@ class MainCommands:
         await message.answer(CommandDo.text_start, reply_markup = CommandDo.keyboard)
   
 
-    #DO CALlBACK NOTION BUTTON
+    #DO CALLBACK NOTION BUTTON
     @router.callback_query(lambda call: call.data == 'do_btn_diary')
     async def do_option1_callback(call):
         try:

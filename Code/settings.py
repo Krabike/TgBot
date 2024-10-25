@@ -11,8 +11,8 @@ dp = Dispatcher()
 ROUTERS = [router]
 
 BOT_COMMANDS_LIST = [
-    types.BotCommand(command='help', description='Подробное описание всех доступных команд'),
     types.BotCommand(command='start', description='Меню основного управления'),
+    types.BotCommand(command='help', description='Подробное описание всех доступных команд'),
     types.BotCommand(command='diary', description='Меню управление командами дневником'),
     types.BotCommand(command='echo', description='Копирует ваше сообщение после команды'),
 ]

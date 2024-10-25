@@ -1,15 +1,15 @@
 import requests
 import fake_useragent
+import re
 from bs4 import BeautifulSoup
-'''
-ОБЯЗАТЕЛЬНО ВСЕ ЗАСУНУТЬ В КЛАСС ЧЕРЕЗ ООП
-'''
+
 
 class ReqSet:
     def __init__(self):
         self.session = requests.Session()
         self.user = fake_useragent.UserAgent().random
 
+        self.lessons_week = "https://edu.gounn.ru/journal-app/u.1179/week.0"
 
         self.header = {
         "user-agent": self.user
@@ -23,7 +23,6 @@ class ReqSet:
         link = 'https://edu.gounn.ru/ajaxauthorize'
         self.response = self.session.post(link, data = self.data, headers = self.header).text
 
-
         self.cookies_dict = [
             {"domain": key.domain, "name": key.name, "path": key.path, "value": key.value}
             for key in self.session.cookies
@@ -36,18 +35,36 @@ class ReqSet:
 
 
 class DiaryNotes(ReqSet):
-    def get_notes(self):
-        lessons_week = "https://edu.gounn.ru/journal-app/u.1179/week.0"
-        lessons_response = self.main_session.get(lessons_week, headers = self.header).text
+    def notes(self):
+        r = self.main_session.head('https://edu.gounn.ru/journal-user-preferences-esia-action/?action=lately&hash=d89c2af7296611982180d72ddc76d71a')
+        print(r)
+        lessons_response = self.main_session.get(self.lessons_week, headers = self.header).text
+        
         soup = BeautifulSoup(lessons_response, 'lxml')
         
-        get_notes = soup.find_all(class_ = "dnevnik-mark")
+        days = soup.find_all(class_ = "dnevnik-day")[0:5] #get all days
         
-        all_notes = []
-        for i in get_notes:
-            all_notes.append(i.text.replace('\n', '').strip())
-            
-        all_notes_ready = ', '.join(all_notes)
-        return all_notes_ready
+        week = []
+        for i in days:
+            headers = i.find_all(class_ = "dnevnik-day__header")
+            for x in headers:
+                week.append('\n***' + x.get_text(strip=True) + '***\n') #get day header
         
-#print(DiaryNotes().get_notes())
+            lesson = i.find_all(class_ = "dnevnik-lesson")
+            for b in lesson:
+                notes_day = b.find_all(class_ = "js-rt_licey-dnevnik-subject")
+                
+                for m in notes_day:
+                    notes = b.find_all(class_ = "dnevnik-mark")
+                    if notes:
+                        week.append(m.get_text(strip=True)+' - ') #get days ONLY with notes
+                        
+                    for h in notes:
+                        week.append(h.get_text(strip=True)+'\n') #get all notes
+                    
+        week_final = ''.join(week)
+        #print(week_final)
+        return week_final  
+                
+             
+#DiaryNotes().notes2() 

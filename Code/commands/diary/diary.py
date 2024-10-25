@@ -31,7 +31,7 @@ class DiaryCommands:
     async def diary_notes_callback(call):
         try:
             if call.data == 'diary_notes':
-                await call.message.answer(f"Твои оценки: {DiaryNotes().get_notes()}")
+                await call.message.answer(f"{DiaryNotes().notes()}", parse_mode="Markdown")
                 await call.answer()
         except Exception as _ex:
             print(f'error diary_btn1 callback {_ex}')
