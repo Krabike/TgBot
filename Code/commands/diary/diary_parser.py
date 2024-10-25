@@ -1,15 +1,15 @@
 import requests
 import fake_useragent
 import re
+import logging
 from bs4 import BeautifulSoup
 
 
+logging.basicConfig(level=logging.INFO)
 class ReqSet:
     def __init__(self):
         self.session = requests.Session()
         self.user = fake_useragent.UserAgent().random
-
-        self.lessons_week = "https://edu.gounn.ru/journal-app/u.1179/week.0"
 
         self.header = {
         "user-agent": self.user
@@ -21,7 +21,11 @@ class ReqSet:
 
 
         link = 'https://edu.gounn.ru/ajaxauthorize'
-        self.response = self.session.post(link, data = self.data, headers = self.header).text
+        try:
+            self.response = self.session.post(link, data = self.data, headers = self.header).text
+            logging.info(f'авторизация успешна')
+        except requests.exceptions.RequestException as _ex:
+            logging.error(f'ошибка при авторизации, ошибка - {_ex}')
 
         self.cookies_dict = [
             {"domain": key.domain, "name": key.name, "path": key.path, "value": key.value}
@@ -30,17 +34,23 @@ class ReqSet:
 
 
         self.main_session = requests.Session()
-        for cookies in self.cookies_dict:
-            self.main_session.cookies.set(**cookies)
+        try:
+            for cookies in self.cookies_dict:
+                self.main_session.cookies.set(**cookies)
+            logging.info('cookies seted')
+        except:
+            logging.info('cookies error')
 
 
 class DiaryNotes(ReqSet):
     def notes(self):
-        r = self.main_session.head('https://edu.gounn.ru/journal-user-preferences-esia-action/?action=lately&hash=d89c2af7296611982180d72ddc76d71a')
-        print(r)
-        lessons_response = self.main_session.get(self.lessons_week, headers = self.header).text
+        lessons_week = "https://edu.gounn.ru/journal-app/u.1179/week.0"
         
-        soup = BeautifulSoup(lessons_response, 'lxml')
+        
+        lessons_response = self.main_session.get(lessons_week, headers = self.header)
+        logging.info(f'овтет от страницы с оценками - {lessons_response.status_code}')
+        
+        soup = BeautifulSoup(lessons_response.text, 'lxml')
         
         days = soup.find_all(class_ = "dnevnik-day")[0:5] #get all days
         
@@ -63,8 +73,9 @@ class DiaryNotes(ReqSet):
                         week.append(h.get_text(strip=True)+'\n') #get all notes
                     
         week_final = ''.join(week)
+        logging.info('Финальный вывод')
         #print(week_final)
         return week_final  
                 
              
-#DiaryNotes().notes2() 
+#DiaryNotes().notes() 

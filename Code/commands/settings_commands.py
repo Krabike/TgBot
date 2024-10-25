@@ -1,13 +1,14 @@
-from aiogram import Router
+from aiogram import Router, html
 
 
 router = Router()
 
 
 COMMANDS_INFO = (
-    'Все доступные команды:\n\n'
-    '/start - меню с основным управлением ботом\n'
-    '/help - выводит это сообщение\n'
-    '/diary - меню управления командами дневником\n'
-    '/echo - выводит текст, введенный после команды\n'
+    f'{html.bold(html.underline('Все доступные команды:'))}\n\n'
+    f'{html.italic(html.underline('/start'))} - меню с основным управлением ботом\n'
+    f'{html.italic(html.underline('/help'))} - выводит это сообщение\n'
+    f'{html.italic(html.underline('/diary'))} - меню управления командами дневника\n'
+    f'{html.italic(html.underline('/echo'))} - выводит текст после команды\n'
+    f'\n ➠ {html.bold(html.link('Source code', 'https://github.com/Krabike/TgBot'))}'
 )
