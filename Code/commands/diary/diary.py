@@ -55,11 +55,14 @@ class DiaryCommands:
                 login = response.data[0]["login"]
                 password = response.data[0]["password"]
                 
+                print(login, password)
+                
                 await call.message.answer(f"{DiaryNotes(f'{login}', f'{password}').notes()}", parse_mode="Markdown")
                 await call.answer()
-            except:
+            except Exception as _ex:
                 await call.message.answer('Данные для входа указаны неправильно или вовсе не указаны')
                 await call.answer()
+                logging.error(f'ошибка при получении оценок{_ex}')
         except Exception as _ex:
             print(f'error diary_btn1 callback {_ex}')
             

@@ -76,11 +76,12 @@ class DiaryNotes(ReqSet):
                         week.append('_'+h.get_text(strip=True)+'_\n') #get all notes
                     
         week_final = ''.join(week)
+        
         logging.info('Финальный вывод')
         
         if week_final == '':
             week_final = '*На этой неделе у тебя нет оценок*'
-        #print(week_final)
+        print(week_final)
         return week_final
                 
              
