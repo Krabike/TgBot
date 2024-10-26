@@ -20,9 +20,8 @@ class Help:
     @router.callback_query(lambda call: call.data == 'type_start')
     async def help_callback(call):
         try:
-            if call.data == 'type_start':
-                await MainCommands.start(call.message)
-                await call.answer()
+            await MainCommands.start(call.message)
+            await call.answer()
         except Exception as _ex:
             print(f'error with button help(start) {_ex}')
 
