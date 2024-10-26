@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 logging.basicConfig(level=logging.INFO)
 class ReqSet:
-    def __init__(self):
+    def __init__(self, login, password):
         self.session = requests.Session()
         self.user = fake_useragent.UserAgent().random
 
@@ -15,8 +15,8 @@ class ReqSet:
         "user-agent": self.user
         }    
         self.data = {
-            "username": "",
-            "password": "",
+            "username": f"{login}",
+            "password": f"{password}",
         }
 
 
@@ -56,26 +56,33 @@ class DiaryNotes(ReqSet):
         
         week = []
         for i in days:
-            headers = i.find_all(class_ = "dnevnik-day__header")
-            for x in headers:
-                week.append('\n***' + x.get_text(strip=True) + '***\n') #get day header
-        
             lesson = i.find_all(class_ = "dnevnik-lesson")
+            headers = i.find_all(class_ = "dnevnik-day__header")
+            
+            for x in headers:
+                notes_exist = i.find_all(class_ = "dnevnik-mark")
+                if notes_exist:
+                    week.append('\n***' + x.get_text(strip=True) + '***\n') #get day header ONLY with notes
+        
             for b in lesson:
-                notes_day = b.find_all(class_ = "js-rt_licey-dnevnik-subject")
+                notes_day = b.find_all(class_ = "js-rt_licey-dnevnik-subject") #get lessons
                 
                 for m in notes_day:
                     notes = b.find_all(class_ = "dnevnik-mark")
                     if notes:
-                        week.append(m.get_text(strip=True)+' - ') #get days ONLY with notes
+                        week.append(m.get_text(strip=True)+' - ') #get lessons ONLY with notes
                         
                     for h in notes:
-                        week.append(h.get_text(strip=True)+'\n') #get all notes
+                        week.append('_'+h.get_text(strip=True)+'_\n') #get all notes
                     
         week_final = ''.join(week)
+        
         logging.info('Финальный вывод')
-        #print(week_final)
-        return week_final  
+        
+        if week_final == '':
+            week_final = '*На этой неделе у тебя нет оценок*'
+        print(week_final)
+        return week_final
                 
              
 #DiaryNotes().notes() 
