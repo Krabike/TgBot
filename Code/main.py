@@ -6,11 +6,12 @@ from aiogram.enums import ParseMode
 import asyncio
 import logging
 import sys
+import os
 
 logger = logging.getLogger("my_app")
 
 async def main():
-    bot = Bot(token = token, default = DefaultBotProperties(parse_mode = ParseMode.HTML))
+    bot = Bot(token = os.getenv('TOKEN'), default = DefaultBotProperties(parse_mode = ParseMode.HTML))
     dp.include_routers(*ROUTERS)
     
     await bot.delete_webhook(drop_pending_updates=True)
