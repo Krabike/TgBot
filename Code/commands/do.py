@@ -2,7 +2,7 @@ from aiogram.types import Message
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from .settings_commands import router
-from .commands_data.my_data import CommandDo, Diary, MyHelp
+from .commands_data.my_data import CommandDo, Diary
 import logging
 
 class MainCommands:

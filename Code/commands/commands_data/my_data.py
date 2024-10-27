@@ -46,9 +46,9 @@ class Diary:
 class ChangeWeek:
     #swap week
 
-    button_prev = InlineKeyboardButton(text = '<--', callback_data = 'btn_prev')
-    button_zeroweek = InlineKeyboardButton(text = 'Вернуться', callback_data = 'btn_zeroweek')
-    button_next =InlineKeyboardButton(text = '-->', callback_data = 'btn_next')
+    button_prev = InlineKeyboardButton(text = '⬅️', callback_data = 'btn_prev')
+    button_zeroweek = InlineKeyboardButton(text = '🔄', callback_data = 'btn_zeroweek')
+    button_next =InlineKeyboardButton(text = '➡️', callback_data = 'btn_next')
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_prev, button_zeroweek, button_next]])
 
