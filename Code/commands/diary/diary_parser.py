@@ -4,7 +4,7 @@ import logging
 from bs4 import BeautifulSoup
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.ERROR)
 class ReqSet:
     def __init__(self, login, password):
         self.session = requests.Session()
