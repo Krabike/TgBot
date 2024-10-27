@@ -1,5 +1,5 @@
 from settings import ROUTERS, BOT_COMMANDS_LIST, dp
-from configs.config import token
+#from configs.config import token
 from aiogram import Bot, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -14,7 +14,7 @@ logging.basicConfig(level="DEBUG")
 
 
 async def main():
-    bot = Bot(token = token, default = DefaultBotProperties(parse_mode = ParseMode.HTML))
+    bot = Bot(token = os.getenv('TOKEN'), default = DefaultBotProperties(parse_mode = ParseMode.HTML))
     dp.include_routers(*ROUTERS)
     
     await bot.delete_webhook(drop_pending_updates=True)

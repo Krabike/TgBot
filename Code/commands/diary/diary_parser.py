@@ -1,6 +1,5 @@
 import requests
 import fake_useragent
-import re
 import logging
 from bs4 import BeautifulSoup
 
@@ -18,7 +17,7 @@ class ReqSet:
             "username": f"{login}",
             "password": f"{password}",
         }
-
+        
 
         link = 'https://edu.gounn.ru/ajaxauthorize'
         try:
