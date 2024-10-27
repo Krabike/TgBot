@@ -41,8 +41,9 @@ class ReqSet:
 
 
 class DiaryNotes(ReqSet):
-    def notes(self):
-        lessons_week = "https://edu.gounn.ru/journal-app/u.1179/week.0"
+    def notes(self, week = 0):
+        lessons_week = f"https://edu.gounn.ru/journal-app/u.1179/week.{week}"
+        
         
         try:
             lessons_response = self.main_session.get(lessons_week, headers = self.header)
