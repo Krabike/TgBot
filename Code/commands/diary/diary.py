@@ -6,12 +6,12 @@ from aiogram.fsm.context import FSMContext
 from ..settings_commands import router
 from ..commands_data.my_data import CommandDo, Diary, ChangeWeek
 from .diary_parser import DiaryNotes
+from .db_connection import DBConnection
 from configs.config import db_url, db_key
 import logging
 
 
 supabase: Client = create_client(db_url, db_key)
-
 
 
 class Reg(StatesGroup):
@@ -25,7 +25,6 @@ class ChangeReg(StatesGroup):
 
 
 class DiaryCommands:
-    week_count = 0
     #/diary
     @router.message(Command('diary'))
     async def diary(message: Message):
@@ -40,109 +39,6 @@ class DiaryCommands:
             await call.answer()
         except Exception as _ex:
             logging.error(f'back button callback in diary: {_ex}')
-            
-    
-    #get notes callback
-    @router.callback_query(lambda call: call.data == 'notes')
-    async def diary_notes_callback(call):
-        try:
-            user_id = call.from_user.id
-                
-            response = (
-            supabase.table("TgUsers")
-            .select("login, password")
-            .eq("user_id", user_id)
-            .execute()
-            )
-                
-            login = response.data[0]["login"]
-            password = response.data[0]["password"]
-                
-                
-            await call.message.answer(f"{DiaryNotes(f'{login}', f'{password}').notes()}", parse_mode="Markdown", reply_markup = ChangeWeek.keyboard)
-            await call.answer()
-        except Exception as _ex:
-            await call.message.answer('Данные для входа неверны или не указаны')
-            await call.answer()
-            logging.error(f'cant receive notes in get notes button callback: {_ex}')
-            
-
-#PREVIOUS WEEK
-    @router.callback_query(lambda call: call.data == 'btn_prev')
-    async def prev_week_callback(call):
-        try:
-            user_id = call.from_user.id
-                
-            response = (
-            supabase.table("TgUsers")
-            .select("login, password")
-            .eq("user_id", user_id)
-            .execute()
-            )
-                
-            login = response.data[0]["login"]
-            password = response.data[0]["password"]
-            
-            DiaryCommands.week_count += 1
-            
-            await call.message.edit_text(f"{DiaryNotes(f'{login}', f'{password}').notes(week = DiaryCommands.week_count)}", parse_mode="Markdown", reply_markup = ChangeWeek.keyboard)
-            await call.answer()
-        except Exception as _ex:
-            await call.message.answer('Данные для входа неверны или не указаны')
-            await call.answer()
-            logging.error(f'cant receive notes in get notes button callback: {_ex}')
-
-
-#ZERO WEEK
-    @router.callback_query(lambda call: call.data == 'btn_zeroweek')
-    async def prev_week_callback(call):
-        try:
-            user_id = call.from_user.id
-                
-            response = (
-            supabase.table("TgUsers")
-            .select("login, password")
-            .eq("user_id", user_id)
-            .execute()
-            )
-                
-            login = response.data[0]["login"]
-            password = response.data[0]["password"]
-            
-            DiaryCommands.week_count = 0
-            
-            await call.message.edit_text(f"{DiaryNotes(f'{login}', f'{password}').notes(week = DiaryCommands.week_count)}", parse_mode="Markdown", reply_markup = ChangeWeek.keyboard)
-            await call.answer()
-        except Exception as _ex:
-            await call.message.answer('Данные для входа неверны или не указаны')
-            await call.answer()
-            logging.error(f'cant receive notes in get notes button callback: {_ex}')
-
-
-#NEXT WEEK
-    @router.callback_query(lambda call: call.data == 'btn_next')
-    async def prev_week_callback(call):
-        try:
-            user_id = call.from_user.id
-                
-            response = (
-            supabase.table("TgUsers")
-            .select("login, password")
-            .eq("user_id", user_id)
-            .execute()
-            )
-                
-            login = response.data[0]["login"]
-            password = response.data[0]["password"]
-            
-            DiaryCommands.week_count -= 1
-            
-            await call.message.edit_text(f"{DiaryNotes(f'{login}', f'{password}').notes(week = DiaryCommands.week_count)}", parse_mode="Markdown", reply_markup = ChangeWeek.keyboard)
-            await call.answer()
-        except Exception as _ex:
-            await call.message.answer('Данные для входа неверны или не указаны')
-            await call.answer()
-            logging.error(f'cant receive notes in get notes button callback: {_ex}')
 
 
     #sign_in callback
@@ -226,7 +122,9 @@ class Login:
         try:
             db_response = (
                 supabase.table("TgUsers")
-                .insert({"login": user_login, "password": user_password, "user_id": user_id})
+                .insert({"login": user_login,
+                         "password": user_password,
+                         "user_id": user_id})
                 .execute()
             )
             await message.answer(f'*Успешное внесение данных*\nЛогин: `{user_login}`\nПароль: `{user_password}`', parse_mode="Markdown")
