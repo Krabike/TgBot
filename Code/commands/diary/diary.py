@@ -8,7 +8,6 @@ from aiogram.fsm.context import FSMContext
 from ..settings_commands import router
 from ..commands_data.my_data import CommandDo, Diary
 from .diary_parser import DiaryNotes
-#from configs.config import db_url, db_key
 import os
 import logging
 
