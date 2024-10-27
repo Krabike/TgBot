@@ -41,3 +41,14 @@ class Diary:
     button_sign_in = InlineKeyboardButton(text = 'Войти в аккаунт', callback_data = 'sign_in')
     
     keyboard = InlineKeyboardMarkup(row_width=3, inline_keyboard=[[button_notes], [button_sign_in], [button_back]])
+
+
+class ChangeWeek:
+    #swap week
+
+    button_prev = InlineKeyboardButton(text = '<--', callback_data = 'btn_prev')
+    button_zeroweek = InlineKeyboardButton(text = 'Вернуться', callback_data = 'btn_zeroweek')
+    button_next =InlineKeyboardButton(text = '-->', callback_data = 'btn_next')
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_prev, button_zeroweek, button_next]])
+
