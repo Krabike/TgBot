@@ -53,17 +53,18 @@ class DiaryNotes(ReqSet):
         
         soup = BeautifulSoup(lessons_response.text, 'lxml')
         
-        days = soup.find_all(class_ = "dnevnik-day")[0:5] #get all days
+        days = soup.find_all(class_ = "dnevnik-day")[0:6] #get all days
         
         week = []
         for i in days:
             lesson = i.find_all(class_ = "dnevnik-lesson")
             headers = i.find_all(class_ = "dnevnik-day__header")
-            
+                
             for x in headers:
                 notes_exist = i.find_all(class_ = "dnevnik-mark")
                 if notes_exist:
                     week.append('\n\n***' + x.get_text(strip=True) + '***') #get day header ONLY with notes
+        
         
             for b in lesson:
                 notes_day = b.find_all(class_ = "js-rt_licey-dnevnik-subject") #get lessons

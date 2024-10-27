@@ -60,7 +60,7 @@ class GetNotes:
             await call.answer()
         except Exception as _ex:
             if GetNotes.week_count == 0:
-                await call.message.answer('Вы уже на начальной странице')
+                await call.answer('Вы уже на начальной странице')
                 await call.answer()
             else:
                 await call.message.answer('Данные для входа неверны или не указаны')

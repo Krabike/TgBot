@@ -15,10 +15,8 @@ class Table:
     async def diary_notes_callback(call):
         try:
             
-            
-            await call.message.answer()
             await call.answer()
         except Exception as _ex:
             await call.message.answer('ошибка')
             await call.answer()
-            logging.error(f'cant receive notes in get notes button callback: {_ex}')
+            logging.error(f'table button callback: {_ex}')
