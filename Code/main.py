@@ -1,5 +1,4 @@
 from settings import ROUTERS, BOT_COMMANDS_LIST, dp
-#from configs.config import token
 from aiogram import Bot, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
