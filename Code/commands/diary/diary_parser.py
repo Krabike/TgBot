@@ -80,7 +80,7 @@ class DiaryNotes(ReqSet):
         
         if week_final == '':
             week_final = '*На этой неделе у тебя нет оценок*'
-        print(week_final)
+        #print(week_final)
         return week_final
                 
              

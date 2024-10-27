@@ -55,7 +55,6 @@ class DiaryCommands:
                 login = response.data[0]["login"]
                 password = response.data[0]["password"]
                 
-                print(login, password)
                 
                 await call.message.answer(f"{DiaryNotes(f'{login}', f'{password}').notes()}", parse_mode="Markdown")
                 await call.answer()
