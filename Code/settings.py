@@ -7,7 +7,6 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram import types, Dispatcher
 from aiogram.types import BotCommand
 
-
 storage = MemoryStorage()
 dp = Dispatcher(storage=storage)
 
