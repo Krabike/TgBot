@@ -6,9 +6,8 @@ from aiogram.fsm.context import FSMContext
 from ..settings_commands import router
 from ..commands_data.my_data import CommandDo, Diary
 from .diary_parser import DiaryNotes
-from configs.config import db_url, db_key
-import logging
 import os
+import logging
 
 
 supabase: Client = create_client(os.getenv('DB_URL'), os.getenv('DB_KEY'))
