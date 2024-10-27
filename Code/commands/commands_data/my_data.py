@@ -37,10 +37,11 @@ class Diary:
     )
     
     button_notes = InlineKeyboardButton(text = 'Оценки', callback_data = 'notes')
+    button_table = InlineKeyboardButton(text = 'Расписание', callback_data = 'table')
     button_back = InlineKeyboardButton(text = 'Назад', callback_data = 'diary_back')
     button_sign_in = InlineKeyboardButton(text = 'Войти в аккаунт', callback_data = 'sign_in')
     
-    keyboard = InlineKeyboardMarkup(row_width=3, inline_keyboard=[[button_notes], [button_sign_in], [button_back]])
+    keyboard = InlineKeyboardMarkup(row_width=3, inline_keyboard=[[button_notes, button_table], [button_sign_in], [button_back]])
 
 
 class ChangeWeek:
