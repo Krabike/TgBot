@@ -1,11 +1,9 @@
 import requests
 import fake_useragent
-import re
 import logging
 from bs4 import BeautifulSoup
 
 
-logging.basicConfig(level=logging.INFO)
 class ReqSet:
     def __init__(self, login, password):
         self.session = requests.Session()
@@ -18,14 +16,14 @@ class ReqSet:
             "username": f"{login}",
             "password": f"{password}",
         }
-
+        
 
         link = 'https://edu.gounn.ru/ajaxauthorize'
         try:
             self.response = self.session.post(link, data = self.data, headers = self.header).text
             logging.info(f'авторизация успешна')
         except requests.exceptions.RequestException as _ex:
-            logging.error(f'ошибка при авторизации, ошибка - {_ex}')
+            logging.error(f'authorization: {_ex}')
 
         self.cookies_dict = [
             {"domain": key.domain, "name": key.name, "path": key.path, "value": key.value}
@@ -38,16 +36,18 @@ class ReqSet:
             for cookies in self.cookies_dict:
                 self.main_session.cookies.set(**cookies)
             logging.info('cookies seted')
-        except:
-            logging.info('cookies error')
+        except Exception as _ex:
+            logging.error(f'cookies: {_ex}')
 
 
 class DiaryNotes(ReqSet):
     def notes(self):
         lessons_week = "https://edu.gounn.ru/journal-app/u.1179/week.0"
         
-        
-        lessons_response = self.main_session.get(lessons_week, headers = self.header)
+        try:
+            lessons_response = self.main_session.get(lessons_week, headers = self.header)
+        except Exception as _ex:
+            logging.error(f'cant get access to lesson week: {_ex}')
         logging.info(f'овтет от страницы с оценками - {lessons_response.status_code}')
         
         soup = BeautifulSoup(lessons_response.text, 'lxml')
@@ -62,7 +62,7 @@ class DiaryNotes(ReqSet):
             for x in headers:
                 notes_exist = i.find_all(class_ = "dnevnik-mark")
                 if notes_exist:
-                    week.append('\n***' + x.get_text(strip=True) + '***\n') #get day header ONLY with notes
+                    week.append('\n\n***' + x.get_text(strip=True) + '***') #get day header ONLY with notes
         
             for b in lesson:
                 notes_day = b.find_all(class_ = "js-rt_licey-dnevnik-subject") #get lessons
@@ -70,19 +70,14 @@ class DiaryNotes(ReqSet):
                 for m in notes_day:
                     notes = b.find_all(class_ = "dnevnik-mark")
                     if notes:
-                        week.append(m.get_text(strip=True)+' - ') #get lessons ONLY with notes
+                        week.append('\n'+m.get_text(strip=True)+' - ') #get lessons ONLY with notes
                         
                     for h in notes:
-                        week.append('_'+h.get_text(strip=True)+'_\n') #get all notes
+                        week.append('*'+h.get_text(strip=True).replace('\n', ' ')+'* ')#get all notes
                     
         week_final = ''.join(week)
         
         logging.info('Финальный вывод')
-        
         if week_final == '':
             week_final = '*На этой неделе у тебя нет оценок*'
-        print(week_final)
         return week_final
-                
-             
-#DiaryNotes().notes() 

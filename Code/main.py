@@ -1,17 +1,13 @@
 from settings import ROUTERS, BOT_COMMANDS_LIST, dp
 from configs.config import token
-from aiogram import Bot, html
+from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 import asyncio
 import logging
 import sys
-import os
-
 
 logger = logging.getLogger("my_app")
-logging.basicConfig(level="DEBUG")
-
 
 async def main():
     bot = Bot(token = token, default = DefaultBotProperties(parse_mode = ParseMode.HTML))
@@ -27,5 +23,6 @@ async def main():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    logging.basicConfig(level=logging.WARNING, stream=sys.stdout)
+    logging.warning('Bot started')
     asyncio.run(main())
