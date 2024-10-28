@@ -1,7 +1,7 @@
 from supabase import create_client, Client
 from aiogram.exceptions import TelegramBadRequest
 from ..settings_commands import router
-from ..commands_data.my_data import ChangeWeek
+from ..commands_data.my_data import ChangeWeek, Diary
 from .diary_parser import DiaryNotes
 from .db_connection import DBConnection
 from configs.config import db_url, db_key
@@ -22,12 +22,22 @@ class GetNotes:
             login = await DBConnection().take_login_db(user_id)
             
             
-            await call.message.answer(f"{DiaryNotes(f'{login}', f'{password}').notes()}", parse_mode="Markdown", reply_markup = ChangeWeek.keyboard)
+            await call.message.edit_text(f"{DiaryNotes(f'{login}', f'{password}').notes()}", parse_mode="Markdown", reply_markup = ChangeWeek.keyboard)
             await call.answer()
         except Exception as _ex:
             await call.message.answer('Данные для входа неверны или не указаны')
             await call.answer()
             logging.error(f'cant receive notes in get notes button callback: {_ex}')
+            
+            
+    @router.callback_query(lambda call: call.data == 'btn_back_change_week')
+    async def diary_notes_callback(call):
+        try:
+            await call.message.edit_text(Diary.text_start, reply_markup = Diary.keyboard)
+            await call.answer()
+        except Exception as _ex:
+            await call.answer()
+            logging.error(f'change week back button callback: {_ex}')        
             
 
 #PREVIOUS WEEK

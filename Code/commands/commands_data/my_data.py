@@ -49,9 +49,10 @@ class ChangeWeek:
 
     button_prev = InlineKeyboardButton(text = '⬅️', callback_data = 'btn_prev')
     button_zeroweek = InlineKeyboardButton(text = '🔄', callback_data = 'btn_zeroweek')
-    button_next =InlineKeyboardButton(text = '➡️', callback_data = 'btn_next')
+    button_next = InlineKeyboardButton(text = '➡️', callback_data = 'btn_next')
+    button_back = InlineKeyboardButton(text = 'Назад', callback_data = 'btn_back_change_week')
 
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_prev, button_zeroweek, button_next]])
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_prev, button_zeroweek, button_next], [button_back]])
 
 
 class Homework:
