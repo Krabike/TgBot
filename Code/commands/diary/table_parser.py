@@ -9,7 +9,7 @@ class TableParser(ReqSet):
         link = "https://edu.gounn.ru/journal-app/u.1179/week.1"
         
         try:
-            response = self.main_session.get(link, headers = self.header)
+            response = self.main_session.get(link, headers = self.header, timeout=10)
             logging.info(f"Ответ от страницы с заданием: {response.status_code}")
         except Exception as _ex:
             logging.error(f'cant get access to lesson week: {_ex}')
@@ -41,7 +41,7 @@ class TableParser(ReqSet):
                         full_in_one.append('*'+d.get_text(strip=True)+'* - ')#print(d.text.replace('\n', ''))
                 
                 for e in lesson_home_task:
-                    full_in_one.append(re.sub(r'http[s]?://\S+', ' (ссылка удалена)', e.get_text(strip=True).replace('`', '').replace('"', '')+'\n\n'))
+                    full_in_one.append(re.sub(r'http[s]?://\S+', ' (ссылка удалена)', e.get_text(strip=True).replace('`', '').replace('"', '').replace('_', '').replace('*', '').replace('#', '')+'\n\n'))
         
         
         start_words = ['*Понедельник', '*Вторник', '*Среда', '*Четверг', '*Пятница']

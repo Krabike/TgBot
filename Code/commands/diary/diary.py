@@ -107,7 +107,7 @@ class Login:
         await state.update_data(login=message.text)
         await state.set_state(Reg.password)
         await message.answer('Введите *пароль* от электронного дневника\nЕсли вы хотите отменить ввод - напишите */cancel*', parse_mode="Markdown")
-        
+    
     
     @router.message(Reg.password)
     async def password_state(message: Message, state: FSMContext):

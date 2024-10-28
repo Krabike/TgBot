@@ -20,7 +20,7 @@ class ReqSet:
 
         link = 'https://edu.gounn.ru/ajaxauthorize'
         try:
-            self.response = self.session.post(link, data = self.data, headers = self.header).text
+            self.response = self.session.post(link, data = self.data, headers = self.header, timeout=10).text
             logging.info(f'авторизация успешна')
         except requests.exceptions.RequestException as _ex:
             logging.error(f'authorization: {_ex}')
@@ -49,8 +49,6 @@ class DiaryNotes(ReqSet):
             lessons_response = self.main_session.get(lessons_week, headers = self.header, timeout = 5)
         except Exception as _ex:
             logging.error(f'cant get access to lesson week: {_ex}')
-        finally:
-            self.main_session.close()
         logging.info(f'овтет от страницы с оценками - {lessons_response.status_code}')
         
         soup = BeautifulSoup(lessons_response.text, 'lxml')

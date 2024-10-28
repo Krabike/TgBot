@@ -57,7 +57,7 @@ class ChangeWeek:
 
 class Homework:
     #days in homework button
-    text = 'just a long work text! . . . . . . . .. . .. . . .. .'
+    text = '*Выберите день недели, в котором хотите посмотреть домашнее задание*'
     
     button_monday = InlineKeyboardButton(text = 'Понедельник', callback_data = 'btn_monday')
     button_tuesday = InlineKeyboardButton(text = 'Вторник', callback_data = 'btn_tuesday')
