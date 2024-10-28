@@ -1,4 +1,5 @@
 from supabase import create_client, Client
+from aiogram.exceptions import TelegramBadRequest
 from ..settings_commands import router
 from ..commands_data.my_data import ChangeWeek
 from .diary_parser import DiaryNotes
@@ -17,8 +18,8 @@ class GetNotes:
     async def diary_notes_callback(call):
         try:
             user_id = call.from_user.id
-            password = DBConnection().take_password_db(user_id)
-            login = DBConnection().take_login_db(user_id)
+            password = await DBConnection().take_password_db(user_id)
+            login = await DBConnection().take_login_db(user_id)
             
             
             await call.message.answer(f"{DiaryNotes(f'{login}', f'{password}').notes()}", parse_mode="Markdown", reply_markup = ChangeWeek.keyboard)
@@ -34,12 +35,14 @@ class GetNotes:
     async def prev_week_callback(call):
         try:
             user_id = call.from_user.id
-            password = DBConnection().take_password_db(user_id)
-            login = DBConnection().take_login_db(user_id)
+            password = await DBConnection().take_password_db(user_id)
+            login = await DBConnection().take_login_db(user_id)
             
             GetNotes.week_count += 1
             
             await call.message.edit_text(f"{DiaryNotes(f'{login}', f'{password}').notes(week = GetNotes.week_count)}", parse_mode="Markdown", reply_markup = ChangeWeek.keyboard)
+            await call.answer()
+        except TelegramBadRequest:
             await call.answer()
         except Exception as _ex:
             await call.message.answer('Данные для входа неверны или не указаны')
@@ -52,8 +55,8 @@ class GetNotes:
     async def prev_week_callback(call):
         try:
             user_id = call.from_user.id
-            password = DBConnection().take_password_db(user_id)
-            login = DBConnection().take_login_db(user_id)
+            password = await DBConnection().take_password_db(user_id)
+            login = await DBConnection().take_login_db(user_id)
             GetNotes.week_count = 0
             
             await call.message.edit_text(f"{DiaryNotes(f'{login}', f'{password}').notes(week = GetNotes.week_count)}", parse_mode="Markdown", reply_markup = ChangeWeek.keyboard)
@@ -73,12 +76,14 @@ class GetNotes:
     async def prev_week_callback(call):
         try:
             user_id = call.from_user.id
-            password = DBConnection().take_password_db(user_id)
-            login = DBConnection().take_login_db(user_id)
+            password = await DBConnection().take_password_db(user_id)
+            login = await DBConnection().take_login_db(user_id)
             
             GetNotes.week_count -= 1
             
             await call.message.edit_text(f"{DiaryNotes(f'{login}', f'{password}').notes(week = GetNotes.week_count)}", parse_mode="Markdown", reply_markup = ChangeWeek.keyboard)
+            await call.answer()
+        except TelegramBadRequest:
             await call.answer()
         except Exception as _ex:
             await call.message.answer('Данные для входа неверны или не указаны')

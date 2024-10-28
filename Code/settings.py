@@ -3,6 +3,7 @@ from commands.diary.notes import GetNotes
 from commands.info import Help
 from commands.do import MainCommands
 from commands.diary.diary import DiaryCommands
+from commands.diary.table import Table
 from commands.settings_commands import router
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram import types, Dispatcher

@@ -7,7 +7,7 @@ from configs.config import db_url, db_key
 supabase: Client = create_client(db_url, db_key)
           
 class DBConnection:
-    def take_login_db(self, user_id):
+    async def take_login_db(self, user_id):
         response = (
         supabase.table("TgUsers")
         .select("login")
@@ -19,7 +19,7 @@ class DBConnection:
         return login
 
     
-    def take_password_db(self, user_id):
+    async def take_password_db(self, user_id):
         response = (
         supabase.table("TgUsers")
         .select("password")
@@ -29,4 +29,3 @@ class DBConnection:
 
         password = response.data[0]["password"]
         return password
-    

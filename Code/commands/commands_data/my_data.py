@@ -53,3 +53,22 @@ class ChangeWeek:
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_prev, button_zeroweek, button_next]])
 
+
+class Homework:
+    #days in homework button
+    text = 'just a long work text! . . . . . . . .. . .. . . .. .'
+    
+    button_monday = InlineKeyboardButton(text = 'Понедельник', callback_data = 'btn_monday')
+    button_tuesday = InlineKeyboardButton(text = 'Вторник', callback_data = 'btn_tuesday')
+    button_wednesday = InlineKeyboardButton(text = 'Среда', callback_data = 'btn_wednesday')
+    button_thursday = InlineKeyboardButton(text = 'Четверг', callback_data = 'btn_thursday')
+    button_friday = InlineKeyboardButton(text = 'Пятница', callback_data = 'btn_friday')
+    
+    button_back = InlineKeyboardButton(text = 'Назад', callback_data = 'btn_homework_back')
+    
+    keyboard_monday = InlineKeyboardMarkup(inline_keyboard=[[button_tuesday, button_wednesday], [button_thursday, button_friday], [button_back]])
+    keyboard_tuesday = InlineKeyboardMarkup(inline_keyboard=[[button_monday, button_wednesday], [button_thursday, button_friday], [button_back]])
+    keyboard_wednesday = InlineKeyboardMarkup(inline_keyboard=[[button_monday, button_tuesday], [button_thursday, button_friday], [button_back]])
+    keyboard_thursday = InlineKeyboardMarkup(inline_keyboard=[[button_monday, button_tuesday], [button_wednesday, button_friday], [button_back]])
+    keyboard_friday = InlineKeyboardMarkup(inline_keyboard=[[button_monday, button_tuesday], [button_wednesday, button_thursday], [button_back]])
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_monday, button_tuesday], [button_wednesday, button_thursday], [button_friday], [button_back]])

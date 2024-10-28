@@ -46,9 +46,11 @@ class DiaryNotes(ReqSet):
         
         
         try:
-            lessons_response = self.main_session.get(lessons_week, headers = self.header)
+            lessons_response = self.main_session.get(lessons_week, headers = self.header, timeout = 5)
         except Exception as _ex:
             logging.error(f'cant get access to lesson week: {_ex}')
+        finally:
+            self.main_session.close()
         logging.info(f'овтет от страницы с оценками - {lessons_response.status_code}')
         
         soup = BeautifulSoup(lessons_response.text, 'lxml')
