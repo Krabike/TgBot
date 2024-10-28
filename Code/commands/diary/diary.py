@@ -4,8 +4,7 @@ from aiogram.filters import Command
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
 from ..settings_commands import router
-from ..commands_data.my_data import CommandDo, Diary, ChangeWeek
-from .diary_parser import DiaryNotes
+from ..commands_data.my_data import CommandDo, Diary
 from .db_connection import DBConnection
 from configs.config import db_url, db_key
 import logging

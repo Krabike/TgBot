@@ -1,13 +1,7 @@
-from supabase import create_client, Client
-from aiogram.types import Message
-from aiogram.filters import Command
-from aiogram.fsm.state import StatesGroup, State
 from ..settings_commands import router
-from ..commands_data.my_data import CommandDo, Diary, ChangeWeek, Homework
-from .diary_parser import DiaryNotes
+from ..commands_data.my_data import Diary, Homework
 from .db_connection import DBConnection
 from .table_parser import TableParser
-from configs.config import db_url, db_key
 import logging
 
 
@@ -48,7 +42,7 @@ class Table:
             logging.error(f'table monday button callback: {_ex}')
         
     
-        #tuesday button
+    #tuesday button
     @router.callback_query(lambda call: call.data == 'btn_tuesday')
     async def diary_notes_callback(call):
         try:

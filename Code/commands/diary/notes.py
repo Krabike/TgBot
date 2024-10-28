@@ -1,14 +1,9 @@
-from supabase import create_client, Client
 from aiogram.exceptions import TelegramBadRequest
 from ..settings_commands import router
 from ..commands_data.my_data import ChangeWeek, Diary
 from .diary_parser import DiaryNotes
 from .db_connection import DBConnection
-from configs.config import db_url, db_key
 import logging
-
-
-supabase: Client = create_client(db_url, db_key)
 
 
 #get notes callback

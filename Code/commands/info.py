@@ -1,4 +1,4 @@
-from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import Message
 from aiogram.filters import Command
 from .settings_commands import router
 from .do import MainCommands
