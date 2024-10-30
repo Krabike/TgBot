@@ -1,8 +1,8 @@
 from settings import ROUTERS, BOT_COMMANDS_LIST, dp
-from configs.config import token
 from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from configs.config import token
 import asyncio
 import logging
 import sys

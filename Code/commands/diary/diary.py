@@ -1,4 +1,5 @@
 from supabase import create_client, Client
+from aiogram import F
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.state import StatesGroup, State
@@ -6,8 +7,9 @@ from aiogram.fsm.context import FSMContext
 from ..settings_commands import router
 from ..commands_data.my_data import CommandDo, Diary
 from .db_connection import DBConnection
-from configs.config import db_url, db_key
 import logging
+import os
+from configs.config import db_url, db_key
 
 
 supabase: Client = create_client(db_url, db_key)
@@ -31,7 +33,7 @@ class DiaryCommands:
     
     
     #back callback
-    @router.callback_query(lambda call: call.data == 'diary_back')
+    @router.callback_query(F.data == 'diary_back')
     async def diary_back_callback(call):
         try:
             await call.message.edit_text(text = CommandDo.text_start, reply_markup = CommandDo.keyboard)
@@ -41,7 +43,7 @@ class DiaryCommands:
 
 
     #sign_in callback
-    @router.callback_query(lambda call: call.data == 'sign_in')
+    @router.callback_query(F.data == 'sign_in')
     async def diary_sign_in_callback(call, state: FSMContext):
         try:
             user_id = call.from_user.id
@@ -56,12 +58,10 @@ class DiaryCommands:
                 await state.set_state(ChangeReg.change_login)
                 await call.answer('Смена аккаунта')
                 await call.message.answer('Введите *новый логин*\nЕсли вы хотите отменить ввод - напишите */cancel*', parse_mode="Markdown")
-                await call.answer()
             else:    
                 await state.set_state(Reg.login)
                 await call.answer('Добавление аккаунта')
                 await call.message.answer('Введите *логин* от электронного дневника\nЕсли вы хотите отменить ввод - напишите */cancel*', parse_mode="Markdown")
-                await call.answer()
             
         except Exception as _ex:
             logging.error(f'sign in button callback: {_ex}')

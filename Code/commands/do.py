@@ -1,6 +1,7 @@
 from aiogram.types import Message
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
+from aiogram import F
 from .settings_commands import router
 from .commands_data.my_data import CommandDo, Diary
 import logging
@@ -24,7 +25,7 @@ class MainCommands:
   
 
     #start callback diary button
-    @router.callback_query(lambda call: call.data == 'do_btn_diary')
+    @router.callback_query(F.data == 'do_btn_diary')
     async def do_option1_callback(call):
         try:
             await call.message.edit_text(text = Diary.text_start, reply_markup = Diary.keyboard)

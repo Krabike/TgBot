@@ -1,5 +1,6 @@
 from aiogram.types import Message
 from aiogram.filters import Command
+from aiogram import F
 from .settings_commands import router
 from .do import MainCommands
 from .commands_data.my_data import MyHelp
@@ -10,9 +11,10 @@ class Help:
     @router.message(Command('help'))
     async def help(message: Message):
         await message.answer(MyHelp.text_help, reply_markup = MyHelp.keyboard)
+            
         
     #start button in help callback
-    @router.callback_query(lambda call: call.data == 'type_start')
+    @router.callback_query(F.data == 'type_start')
     async def help_callback(call):
         try:
             await MainCommands.start(call.message)
@@ -32,3 +34,4 @@ class Echo:
             await message.answer(get_text)
         except:
             await message.answer("Обязательно значение после команды")
+        
