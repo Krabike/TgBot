@@ -12,14 +12,13 @@ class TableParser:
         soup = BeautifulSoup(content, 'lxml')
         all_days = soup.find_all(class_='dnevnik-day')
 
-        # Правильные ключи для каждого дня
         day_data = {
             'Пн': [], 'Вт': [], 'Ср': [], 'Чт': [], 'Пт': [], 'Сб': []
         }
         day_keys = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']  # Ключи в том же порядке, что и start_words
 
         # Составляем регулярные выражения для очистки текста и извлечения доп. информации после запятой
-        clean_task_pattern = re.compile(r'http[s]?://\S+|[`"*_#]')
+        clean_task_pattern = re.compile(r'[`"*_#]')
         additional_info_pattern = re.compile(r',\s*(.*)')  # Захватываем текст после запятой
 
         for i, day_section in enumerate(all_days):
@@ -46,10 +45,18 @@ class TableParser:
                 if subject and home_task:
                     # Чистим текст и добавляем в вывод
                     subject_text = subject.get_text(strip=True)
-                    home_task_text = clean_task_pattern.sub(
-                        ' (ссылка удалена)',
-                        home_task.get_text(strip=True)
-                    )
+
+                    # Извлекаем текст и ссылку из home_task
+                    home_task_text = home_task.get_text(strip=True)  # Текст задания
+                    link = home_task.find('a')  # Предполагаем, что ссылка находится в теге <a>
+
+                    if link:
+                        url = link.get('href')  # Получаем значение атрибута href
+                        home_task_text = clean_task_pattern.sub('dsaddasdasasd', home_task_text)
+                        # Удаляем текст ссылки
+                        home_task_text = re.sub(r'\s*https?://\S+', '', home_task_text)
+                        home_task_text += f" [ссылка]({url})"  # Добавляем ссылку в нужном формате
+                    
                     day_data[day_name].append(f"*{subject_text}* - {home_task_text}\n\n")
         
         # Формируем финальную строку для выбранного дня

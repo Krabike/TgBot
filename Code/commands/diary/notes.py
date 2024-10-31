@@ -15,8 +15,9 @@ class GetNotes:
         try:
             user_id = call.from_user.id
             data_db = await DBConnection().take_login_password_db(user_id)
+            GetNotes.week_count = 0
             
-            await call.message.edit_text(f"{await NotesParser().parser(f'{data_db[0]}', f'{data_db[1]}')}", parse_mode="Markdown", reply_markup = ChangeWeek.keyboard)
+            await call.message.edit_text(f"{await NotesParser().parser(f'{data_db[0]}', f'{data_db[1]}', week=GetNotes.week_count)}", parse_mode="Markdown", reply_markup = ChangeWeek.keyboard)
             await call.answer()
         except TelegramBadRequest:
             await call.answer()
@@ -24,7 +25,8 @@ class GetNotes:
             await call.answer('Неверные данные')
             logging.error(f'cant receive notes in get notes button callback: {_ex}')
             
-            
+        
+    #back callback
     @router.callback_query(F.data == 'btn_back_change_week')
     async def diary_notes_callback(call):
         try:

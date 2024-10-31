@@ -1,6 +1,7 @@
 #IT IS MANDATORY TO IMPORT 1 CLASS FROM EACH FILE WITH COMMANDS THAT YOU WANT TO ADD
 from commands.diary.notes import GetNotes
 from commands.info import Help
+from commands.timer import ClosedTimer
 from commands.do import MainCommands
 from commands.diary.diary import DiaryCommands
 from commands.diary.table import Table

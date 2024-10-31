@@ -41,7 +41,7 @@ class Table:
             
             day = 'Пн'
             text = await TableParser().parser(f'{data_db[0]}', f'{data_db[1]}', day, Table.week_count)
-            await call.message.edit_text(text+f'\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode="Markdown", reply_markup=Homework.keyboard)
+            await call.message.edit_text(text+f'\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode='Markdown', reply_markup=Homework.keyboard)
             await call.answer()
         except TelegramBadRequest as _ex:
             print(f'word {_ex}')

@@ -1,6 +1,5 @@
 from supabase import create_client, Client
 import time
-import os
 import logging
 from configs.config import db_url, db_key
 
