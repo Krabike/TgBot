@@ -5,10 +5,6 @@ import time
 import logging
 from bs4 import BeautifulSoup
 
-
-logging.basicConfig(level=logging.INFO)
-
-
 class NotesParser:
     async def login(self, login, password, week=0):
         authorize_link = 'https://edu.gounn.ru/ajaxauthorize'
