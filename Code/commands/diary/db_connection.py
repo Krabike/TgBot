@@ -1,10 +1,9 @@
 from supabase import create_client, Client
 import time
 import logging
-from configs.config import db_url, db_key
+import os
 
-
-supabase: Client = create_client(db_url, db_key)
+supabase: Client = create_client(os.getenv("DB_URL"), os.getenv("DB_KEY"))
           
           
 class DBConnection:

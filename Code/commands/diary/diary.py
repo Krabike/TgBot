@@ -9,10 +9,9 @@ from ..commands_data.my_data import CommandDo, Diary
 from .db_connection import DBConnection
 import logging
 import os
-from configs.config import db_url, db_key
 
 
-supabase: Client = create_client(db_url, db_key)
+supabase: Client = create_client(os.getenv("DB_URL"), os.getenv("DB_KEY"))
 
 
 class Reg(StatesGroup):
