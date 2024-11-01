@@ -39,7 +39,7 @@ class GetNotes:
             logging.error(f'change week back button callback: {_ex}')        
             
 
-#PREVIOUS WEEK
+    #PREVIOUS WEEK
     @router.callback_query(F.data == 'btn_prev')
     async def prev_week_callback(call):
         try:
@@ -57,8 +57,8 @@ class GetNotes:
             logging.error(f'previous week button callback: {_ex}')
 
 
-#ZERO WEEK
-    @router.callback_query(F.data == 'btn_zeroweek')
+    #ZERO WEEK
+    @router.callback_query(F.data == 'btn_zeroweek') 
     async def prev_week_callback(call):
         try:
             if GetNotes.week_count == 0:
@@ -77,7 +77,7 @@ class GetNotes:
                 logging.error(f'zero week button callback: {_ex}')
 
 
-#NEXT WEEK
+    #NEXT WEEK
     @router.callback_query(F.data == 'btn_next')
     async def prev_week_callback(call):
         try:

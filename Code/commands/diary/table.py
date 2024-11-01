@@ -41,13 +41,13 @@ class Table:
             
             day = 'Пн'
             text = await TableParser().parser(f'{data_db[0]}', f'{data_db[1]}', day, Table.week_count)
-            await call.message.edit_text(text+f'\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode='Markdown', reply_markup=Homework.keyboard)
+            await call.message.edit_text(text+f'\n\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode='Markdown', reply_markup=Homework.keyboard)
             await call.answer()
         except TelegramBadRequest as _ex:
             print(f'word {_ex}')
             call.answer('d')
         except Exception as _ex:
-            await call.answer('Нет заданий')
+            await call.answer()
             logging.error(f'table monday button callback: {_ex}')
         
     
@@ -59,12 +59,12 @@ class Table:
             data_db = await DBConnection().take_login_password_db(user_id)
             
             day = 'Вт'
-            await call.message.edit_text(f"{await TableParser().parser(f'{data_db[0]}', f'{data_db[1]}', day, Table.week_count)}"+f'\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode="Markdown", reply_markup=Homework.keyboard)
+            await call.message.edit_text(f"{await TableParser().parser(f'{data_db[0]}', f'{data_db[1]}', day, Table.week_count)}"+f'\n\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode="Markdown", reply_markup=Homework.keyboard)
             await call.answer()
         except TelegramBadRequest:
             call.answer()
         except Exception as _ex:
-            await call.answer('Нет заданий')
+            await call.answer()
             logging.error(f'table tuesday button callback: {_ex}')
         
         
@@ -76,12 +76,12 @@ class Table:
             data_db = await DBConnection().take_login_password_db(user_id)
             
             day = 'Ср'       
-            await call.message.edit_text(f"{await TableParser().parser(f'{data_db[0]}', f'{data_db[1]}', day, Table.week_count)}"+f'\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode="Markdown", reply_markup=Homework.keyboard)
+            await call.message.edit_text(f"{await TableParser().parser(f'{data_db[0]}', f'{data_db[1]}', day, Table.week_count)}"+f'\n\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode="Markdown", reply_markup=Homework.keyboard)
             await call.answer()
         except TelegramBadRequest:
             call.answer()
         except Exception as _ex:
-            await call.answer('Нет заданий')
+            await call.answer()
             logging.error(f'table wednesday button callback: {_ex}')
         
         
@@ -93,12 +93,12 @@ class Table:
             data_db = await DBConnection().take_login_password_db(user_id)
             
             day = 'Чт'
-            await call.message.edit_text(f"{await TableParser().parser(f'{data_db[0]}', f'{data_db[1]}', day, Table.week_count)}"+f'\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode="Markdown", reply_markup=Homework.keyboard)
+            await call.message.edit_text(f"{await TableParser().parser(f'{data_db[0]}', f'{data_db[1]}', day, Table.week_count)}"+f'\n\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode="Markdown", reply_markup=Homework.keyboard)
             await call.answer()
         except TelegramBadRequest:
             call.answer()
         except Exception as _ex:
-            await call.answer('Нет заданий')
+            await call.answer()
             logging.error(f'table thursday button callback: {_ex}')
             
             
@@ -110,12 +110,12 @@ class Table:
             data_db = await DBConnection().take_login_password_db(user_id)
             
             day = 'Пт'
-            await call.message.edit_text(f"{await TableParser().parser(f'{data_db[0]}', f'{data_db[1]}', day, Table.week_count)}"+f'\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode="Markdown", reply_markup=Homework.keyboard)
+            await call.message.edit_text(f"{await TableParser().parser(f'{data_db[0]}', f'{data_db[1]}', day, Table.week_count)}"+f'\n\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode="Markdown", reply_markup=Homework.keyboard)
             await call.answer()
         except TelegramBadRequest:
             call.answer()
         except Exception as _ex:
-            await call.answer('Нет заданий')
+            await call.answer()
             logging.error(f'table friday button callback: {_ex}')
             
             
@@ -127,12 +127,12 @@ class Table:
             data_db = await DBConnection().take_login_password_db(user_id)
             
             day = 'Сб'
-            await call.message.edit_text(f"{await TableParser().parser(f'{data_db[0]}', f'{data_db[1]}', day, Table.week_count)}"+f'\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode="Markdown", reply_markup=Homework.keyboard)
+            await call.message.edit_text(f"{await TableParser().parser(f'{data_db[0]}', f'{data_db[1]}', day, Table.week_count)}"+f'\n\nНеделя на которой вы находитесь: `{Table.week_count}`', parse_mode="Markdown", reply_markup=Homework.keyboard)
             await call.answer()
         except TelegramBadRequest:
             call.answer()
         except Exception as _ex:
-            await call.answer('Нет заданий')
+            await call.answer()
             logging.error(f'table friday button callback: {_ex}')
             
     
@@ -143,7 +143,7 @@ class Table:
             Table.week_count += 1
             await call.message.edit_text(text=Homework.text+f'\nНеделя на которой вы находитесь: `{Table.week_count}`', reply_markup=Homework.keyboard, parse_mode = 'Markdown')
         except Exception as _ex:
-            await call.answer('Нет заданий')
+            await call.answer()
             logging.error(f'prev button in table callback: {_ex}')
     
     
@@ -157,7 +157,7 @@ class Table:
                 Table.week_count = 0
                 await call.message.edit_text(text=Homework.text+f'\nНеделя на которой вы находитесь: `{Table.week_count}`', reply_markup=Homework.keyboard, parse_mode = 'Markdown')
         except Exception as _ex:
-            await call.answer('Нет заданий')
+            await call.answer()
             logging.error(f'zero button in table callback: {_ex}')
             
             
@@ -168,5 +168,5 @@ class Table:
             Table.week_count -= 1
             await call.message.edit_text(text=Homework.text+f'\nНеделя на которой вы находитесь: `{Table.week_count}`', reply_markup=Homework.keyboard, parse_mode = 'Markdown')
         except Exception as _ex:
-            await call.answer('Нет заданий')
+            await call.answer()
             logging.error(f'next button in table callback: {_ex}')

@@ -15,53 +15,50 @@ class TableParser:
         day_data = {
             'Пн': [], 'Вт': [], 'Ср': [], 'Чт': [], 'Пт': [], 'Сб': []
         }
-        day_keys = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']  # Ключи в том же порядке, что и start_words
+        day_keys = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
 
-        # Составляем регулярные выражения для очистки текста и извлечения доп. информации после запятой
-        clean_task_pattern = re.compile(r'[`"*_#]')
-        additional_info_pattern = re.compile(r',\s*(.*)')  # Захватываем текст после запятой
+        pattern = re.compile(r'[`*_~]')
+        days_pattern = re.compile(r',\s*(.*)')
 
         for i, day_section in enumerate(all_days):
             header = day_section.find(class_="dnevnik-day__header")
             lessons = day_section.find_all(class_="dnevnik-lesson")
 
-            # Используем правильный ключ из day_keys для текущего дня
             day_name = day_keys[i]
             if header:
-                # Получаем текст дня недели и дополнительную информацию после запятой
-                header_text = header.get_text(strip=True)
-                additional_info = additional_info_pattern.search(header_text)
+                additional_info = days_pattern.search(header.get_text(strip=True))
                 
-                # Добавляем название дня и дополнительные слова после запятой
                 day_data[day_name].append(
-                    f"*{day_name}*{', ' + additional_info.group(1) if additional_info else ''}\n"
+                    f"*{day_name}*{', ' + additional_info.group(1) if additional_info else ''}"
                 )
-            
-            # Обрабатываем уроки
             for lesson in lessons:
-                subject = lesson.find(class_="js-rt_licey-dnevnik-subject")
-                home_task = lesson.find(class_="dnevnik-lesson__hometask")
+                lesson_name = lesson.find_all(class_ = 'js-rt_licey-dnevnik-subject')
+                lesson_task = lesson.find_all(class_ = 'dnevnik-lesson__task')
                 
-                if subject and home_task:
-                    # Чистим текст и добавляем в вывод
-                    subject_text = subject.get_text(strip=True)
+                for name in lesson_name:
+                    if lesson_task:
+                        day_data[day_name].append(f"\n\n*{name.get_text(strip=True)}* - ")
 
-                    # Извлекаем текст и ссылку из home_task
-                    home_task_text = home_task.get_text(strip=True)  # Текст задания
-                    link = home_task.find('a')  # Предполагаем, что ссылка находится в теге <a>
-
-                    if link:
-                        url = link.get('href')  # Получаем значение атрибута href
-                        home_task_text = clean_task_pattern.sub('dsaddasdasasd', home_task_text)
-                        # Удаляем текст ссылки
-                        home_task_text = re.sub(r'\s*https?://\S+', '', home_task_text)
-                        home_task_text += f" [ссылка]({url})"  # Добавляем ссылку в нужном формате
+                for task in lesson_task:
+                    links = task.find_all(href=True)
+                    btn = task.find_all(class_ = 'button__title')
+                    for b in btn:
+                        b.decompose()
                     
-                    day_data[day_name].append(f"*{subject_text}* - {home_task_text}\n\n")
+                    task = task.get_text(strip=True)
+                    clean = pattern.sub('', task)
+                    clean = re.sub(r'\s*https?://\S+', '', clean)
+                    
+                    day_data[day_name].append(f"{clean}")
+                    
+                    if links:
+                        for d in links:
+                            link_url = d.get('href')
+                            link_beautiful = f" [ссылка]({link_url}) "
+                            day_data[day_name].append(f"{link_beautiful}")
         
-        # Формируем финальную строку для выбранного дня
         result = ''.join(day_data.get(day, []))
         
         end_time = time.time()
-        logging.info(f'Асинхронный table: {end_time - start_time:.2f}')
+        logging.info(f'Асинхронный парсер table: {end_time - start_time:.2f}')
         return result

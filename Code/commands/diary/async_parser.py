@@ -51,6 +51,7 @@ class NotesParser:
                         
             except asyncio.TimeoutError as _ex:
                 logging.error(f'Timeout NotesParser: {_ex}')
+                return '*timeout*'
 
     
     async def parser(self, login, password, week=1):
